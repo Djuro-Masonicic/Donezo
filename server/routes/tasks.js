@@ -63,6 +63,17 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// POST /api/tasks/bulk-update - batch status/priority update
+router.post('/bulk-update', async (req, res) => {
+  try {
+    const { ids, update } = req.body;
+    await Task.updateMany({ _id: { $in: ids } }, { $set: update });
+    res.json({ message: `Updated ${ids.length} tasks` });
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
+
 // POST /api/tasks
 router.post('/', async (req, res) => {
   try {
@@ -144,17 +155,6 @@ router.delete('/:id', async (req, res) => {
     res.json({ message: 'Task deleted' });
   } catch (err) {
     res.status(500).json({ message: err.message });
-  }
-});
-
-// POST /api/tasks/bulk-update - batch status/priority update
-router.post('/bulk-update', async (req, res) => {
-  try {
-    const { ids, update } = req.body;
-    await Task.updateMany({ _id: { $in: ids } }, { $set: update });
-    res.json({ message: `Updated ${ids.length} tasks` });
-  } catch (err) {
-    res.status(400).json({ message: err.message });
   }
 });
 
