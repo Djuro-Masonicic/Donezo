@@ -18,16 +18,18 @@ export const DbStatusBanner = () => {
 
   if (isOk) return null;
 
+  const isLocal = window.location.hostname === 'localhost';
+
   return (
     <div className="flex items-center gap-3 px-4 py-2.5 bg-amber-50 border-b border-amber-200 text-sm">
       <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0" />
       <span className="text-amber-800 font-medium">
-        MongoDB is not running.
+        Database unavailable.
       </span>
       <span className="text-amber-700">
-        Start MongoDB with{' '}
-        <code className="bg-amber-100 px-1.5 py-0.5 rounded text-xs font-mono">mongod</code>
-        {' '}in a terminal — the server will reconnect automatically.
+        {isLocal
+          ? <>Start MongoDB with{' '}<code className="bg-amber-100 px-1.5 py-0.5 rounded text-xs font-mono">mongod</code>{' '}in a terminal — the server will reconnect automatically.</>
+          : 'The server is connecting to the database — please wait a moment and refresh.'}
       </span>
       <span className="ml-auto shrink-0 badge bg-amber-100 text-amber-700 border border-amber-300">
         DB: {data?.db ?? 'unreachable'}
