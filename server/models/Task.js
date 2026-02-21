@@ -47,7 +47,7 @@ taskSchema.pre('save', function (next) {
   next();
 });
 
-taskSchema.pre('findOneAndUpdate', async function (next) {
+taskSchema.pre('findOneAndUpdate', async function () {
   const update = this.getUpdate();
   if (update.$set) {
     const doc = { ...update.$set };
@@ -57,7 +57,6 @@ taskSchema.pre('findOneAndUpdate', async function (next) {
       update.$set.priorityScore = computePriorityScore(merged);
     }
   }
-  next();
 });
 
 function computePriorityScore(task) {
